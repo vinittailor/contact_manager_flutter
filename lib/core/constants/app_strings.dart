@@ -82,9 +82,9 @@ class AppStrings {
   static const String emailFailed = 'Could not launch email client';
 
   // ── Dynamic Messages ──────────────────────────────────────────────────
-  static String contactAdded(String name) => '$name added';
-  static String contactUpdated(String name) => '$name updated';
-  static String contactDeleted(String name) => '$name deleted';
+  static String contactAdded(String name) => 'Contact "$name" has been added successfully.';
+  static String contactUpdated(String name) => 'Contact "$name" has been updated successfully.';
+  static String contactDeleted(String name) => 'Contact "$name" has been deleted successfully.';
   static String deleteConfirmation(String name) =>
       'Are you sure you want to delete $name? This action cannot be undone.';
   static String addedOn(String date) => 'Added on $date';
