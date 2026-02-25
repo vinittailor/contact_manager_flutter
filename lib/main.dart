@@ -20,7 +20,6 @@ class ContactManagerApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'Contact Manager',
       debugShowCheckedModeBanner: false,
-
       // ── Theming ──────────────────────────────────────────────────────
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,

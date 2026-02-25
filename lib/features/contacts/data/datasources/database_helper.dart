@@ -10,9 +10,9 @@ class DatabaseHelper {
   static Database? _database;
 
   static const String _dbName = 'contacts.db';
-  static const int _dbVersion = 1;
+  static const int _dbVersion = 2; // bumped for image_path column
 
-  // ── Table & Column Constants ──────────────────────────────────────────
+  // Table & Column Constants
   static const String tableContacts = 'contacts';
   static const String colId = 'id';
   static const String colFirstName = 'first_name';
@@ -20,16 +20,17 @@ class DatabaseHelper {
   static const String colPhoneNumber = 'phone_number';
   static const String colEmail = 'email';
   static const String colIsFavorite = 'is_favorite';
+  static const String colImagePath = 'image_path';
   static const String colCreatedAt = 'created_at';
   static const String colUpdatedAt = 'updated_at';
 
-  // ── Database Getter ───────────────────────────────────────────────────
+  // Database Getter
   Future<Database> get database async {
     _database ??= await _initDatabase();
     return _database!;
   }
 
-  // ── Initialization ────────────────────────────────────────────────────
+  // Initialization
   Future<Database> _initDatabase() async {
     final dbPath = await getDatabasesPath();
     final path = join(dbPath, _dbName);
@@ -38,6 +39,7 @@ class DatabaseHelper {
       path,
       version: _dbVersion,
       onCreate: _onCreate,
+      onUpgrade: _onUpgrade,
     );
   }
 
@@ -50,6 +52,7 @@ class DatabaseHelper {
         $colPhoneNumber TEXT NOT NULL,
         $colEmail TEXT DEFAULT '',
         $colIsFavorite INTEGER NOT NULL DEFAULT 0,
+        $colImagePath TEXT,
         $colCreatedAt TEXT NOT NULL,
         $colUpdatedAt TEXT NOT NULL
       )
@@ -66,7 +69,16 @@ class DatabaseHelper {
     ''');
   }
 
-  // ── CREATE ────────────────────────────────────────────────────────────
+  /// Adds newly introduced columns when upgrading from an older DB version.
+  Future<void> _onUpgrade(Database db, int oldVersion, int newVersion) async {
+    if (oldVersion < 2) {
+      await db.execute(
+        'ALTER TABLE $tableContacts ADD COLUMN $colImagePath TEXT',
+      );
+    }
+  }
+
+  // CREATE
   Future<int> insertContact(Contact contact) async {
     try {
       final db = await database;
@@ -80,7 +92,7 @@ class DatabaseHelper {
     }
   }
 
-  // ── READ — All ────────────────────────────────────────────────────────
+  // READ — All
   Future<List<Contact>> getAllContacts() async {
     try {
       final db = await database;
@@ -94,7 +106,7 @@ class DatabaseHelper {
     }
   }
 
-  // ── READ — Favorites ─────────────────────────────────────────────────
+  // READ — Favorites
   Future<List<Contact>> getFavoriteContacts() async {
     try {
       final db = await database;
@@ -110,7 +122,7 @@ class DatabaseHelper {
     }
   }
 
-  // ── READ — Single ────────────────────────────────────────────────────
+  // READ — Single
   Future<Contact?> getContactById(int id) async {
     try {
       final db = await database;
@@ -127,7 +139,7 @@ class DatabaseHelper {
     }
   }
 
-  // ── UPDATE ────────────────────────────────────────────────────────────
+  // UPDATE
   Future<int> updateContact(Contact contact) async {
     try {
       final db = await database;
@@ -142,7 +154,7 @@ class DatabaseHelper {
     }
   }
 
-  // ── DELETE ────────────────────────────────────────────────────────────
+  // DELETE
   Future<int> deleteContact(int id) async {
     try {
       final db = await database;
@@ -156,7 +168,7 @@ class DatabaseHelper {
     }
   }
 
-  // ── SEARCH ────────────────────────────────────────────────────────────
+  // SEARCH
   Future<List<Contact>> searchContacts(String query) async {
     try {
       final db = await database;
@@ -178,7 +190,7 @@ class DatabaseHelper {
     }
   }
 
-  // ── CLOSE ─────────────────────────────────────────────────────────────
+  // CLOSE
   Future<void> close() async {
     final db = await database;
     await db.close();

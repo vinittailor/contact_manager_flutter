@@ -121,18 +121,6 @@ class AppTheme {
         ),
       ),
 
-      // ── Bottom Navigation ───────────────────────────────────────────
-      bottomNavigationBarTheme: BottomNavigationBarThemeData(
-        type: BottomNavigationBarType.fixed,
-        backgroundColor: colorScheme.surface,
-        selectedItemColor: colorScheme.primary,
-        unselectedItemColor: colorScheme.onSurface.withAlpha(150),
-        elevation: 8,
-        selectedLabelStyle: textTheme.labelSmall?.copyWith(
-          fontWeight: FontWeight.w600,
-        ),
-      ),
-
       // ── Elevated Button ─────────────────────────────────────────────
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
@@ -162,6 +150,47 @@ class AppTheme {
         color: colorScheme.outline.withAlpha(40),
         thickness: 1,
         space: 0,
+      ),
+
+      // ── Navigation Bar (M3) ──────────────────────────────────────
+      navigationBarTheme: NavigationBarThemeData(
+        elevation: 2,
+        height: 72,
+        backgroundColor: colorScheme.surface,
+        surfaceTintColor: colorScheme.surfaceTint,
+        indicatorColor: colorScheme.primary.withAlpha(30),
+        iconTheme: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
+            return IconThemeData(color: colorScheme.primary, size: 24);
+          }
+          return IconThemeData(
+            color: colorScheme.onSurface.withAlpha(150),
+            size: 24,
+          );
+        }),
+        labelTextStyle: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
+            return textTheme.labelSmall?.copyWith(
+              color: colorScheme.primary,
+              fontWeight: FontWeight.w600,
+            );
+          }
+          return textTheme.labelSmall?.copyWith(
+            color: colorScheme.onSurface.withAlpha(150),
+          );
+        }),
+        indicatorShape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+      ),
+
+      // ── Dialog ───────────────────────────────────────────────────
+      dialogTheme: DialogThemeData(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        backgroundColor: colorScheme.surface,
+        surfaceTintColor: colorScheme.surfaceTint,
       ),
 
       // ── Page Transitions ────────────────────────────────────────────

@@ -9,7 +9,7 @@ class ContactRepository {
   ContactRepository({DatabaseHelper? dbHelper})
       : _dbHelper = dbHelper ?? DatabaseHelper.instance;
 
-  // ── CREATE ────────────────────────────────────────────────────────────
+  // CREATE
   Future<int> addContact(Contact contact) async {
     try {
       final now = DateTime.now();
@@ -24,7 +24,7 @@ class ContactRepository {
     }
   }
 
-  // ── READ — All ────────────────────────────────────────────────────────
+  // READ — All
   Future<List<Contact>> getAllContacts() async {
     try {
       return await _dbHelper.getAllContacts();
@@ -34,7 +34,7 @@ class ContactRepository {
     }
   }
 
-  // ── READ — Favorites ─────────────────────────────────────────────────
+  // READ — Favorites
   Future<List<Contact>> getFavoriteContacts() async {
     try {
       return await _dbHelper.getFavoriteContacts();
@@ -44,7 +44,7 @@ class ContactRepository {
     }
   }
 
-  // ── READ — Single ────────────────────────────────────────────────────
+  // READ — Single
   Future<Contact?> getContactById(int id) async {
     try {
       return await _dbHelper.getContactById(id);
@@ -54,7 +54,7 @@ class ContactRepository {
     }
   }
 
-  // ── UPDATE ────────────────────────────────────────────────────────────
+  // UPDATE
   Future<bool> updateContact(Contact contact) async {
     try {
       final updated = contact.copyWith(updatedAt: DateTime.now());
@@ -66,7 +66,7 @@ class ContactRepository {
     }
   }
 
-  // ── DELETE ────────────────────────────────────────────────────────────
+  // DELETE
   Future<bool> deleteContact(int id) async {
     try {
       final rows = await _dbHelper.deleteContact(id);
@@ -77,7 +77,7 @@ class ContactRepository {
     }
   }
 
-  // ── TOGGLE FAVORITE ───────────────────────────────────────────────────
+  // TOGGLE FAVORITE
   Future<bool> toggleFavorite(Contact contact) async {
     try {
       final toggled = contact.copyWith(
@@ -92,7 +92,7 @@ class ContactRepository {
     }
   }
 
-  // ── SEARCH ────────────────────────────────────────────────────────────
+  // SEARCH
   Future<List<Contact>> searchContacts(String query) async {
     try {
       if (query.trim().isEmpty) return await getAllContacts();
