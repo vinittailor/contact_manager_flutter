@@ -15,7 +15,8 @@ Contact Manager is a fully offline-capable contacts application that lets users 
 
 > **Watch the app in action:**
 
-[![Demo Video](https://img.youtube.com/vi/YOUR_VIDEO_ID/maxresdefault.jpg)](https://youtu.be/YOUR_VIDEO_ID)
+
+https://github.com/user-attachments/assets/ed9455f6-fb5c-4b04-8767-b187486d92e1
 
 <!-- 
   HOW TO ADD YOUR DEMO VIDEO:
