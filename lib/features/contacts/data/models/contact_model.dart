@@ -106,11 +106,22 @@ class Contact {
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-    return other is Contact && other.id == id;
+    return other is Contact &&
+        other.id == id &&
+        other.firstName == firstName &&
+        other.lastName == lastName &&
+        other.phoneNumber == phoneNumber &&
+        other.email == email &&
+        other.isFavorite == isFavorite &&
+        other.imagePath == imagePath &&
+        other.updatedAt == updatedAt;
   }
 
   @override
-  int get hashCode => id.hashCode;
+  int get hashCode => Object.hash(
+        id, firstName, lastName, phoneNumber,
+        email, isFavorite, imagePath, updatedAt,
+      );
 
   @override
   String toString() {
