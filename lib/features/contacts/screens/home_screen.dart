@@ -125,7 +125,7 @@ class _TabletLayout extends StatelessWidget {
               child: selected == null
                   ? const _DetailPlaceholder(key: ValueKey('placeholder'))
                   : ContactDetailPane(
-                      key: ValueKey(selected.id),
+                      key: ValueKey('${selected.id}_${selected.updatedAt}'),
                       contact: selected,
                     ),
             );

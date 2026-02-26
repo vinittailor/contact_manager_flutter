@@ -216,6 +216,7 @@ class ContactController extends GetxController {
   }
 
   void navigateToDetail(Contact contact) {
+    selectedContact.value = contact;
     Get.toNamed(AppRoutes.contactDetail, arguments: contact);
   }
 
@@ -350,9 +351,14 @@ class ContactController extends GetxController {
   Future<void> onEmailPressed(Contact contact) async {
     if (contact.email.isEmpty) return;
     final uri = Uri(scheme: 'mailto', path: contact.email);
-    if (await canLaunchUrl(uri)) {
-      await launchUrl(uri);
-    } else {
+    try {
+      if (await canLaunchUrl(uri)) {
+        await launchUrl(uri, mode: LaunchMode.externalApplication);
+      } else {
+        showMessage(AppStrings.error, AppStrings.emailFailed, isError: true);
+      }
+    } catch (e) {
+      debugPrint('onEmailPressed error: $e');
       showMessage(AppStrings.error, AppStrings.emailFailed, isError: true);
     }
   }

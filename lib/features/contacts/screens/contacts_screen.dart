@@ -23,6 +23,8 @@ class ContactsScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text(AppStrings.contactsTab),
+        titleSpacing: 20,
+        actionsPadding: EdgeInsetsGeometry.only(right: 10),
         actions: [
           Obx(() {
             final current = controller.sortType.value;

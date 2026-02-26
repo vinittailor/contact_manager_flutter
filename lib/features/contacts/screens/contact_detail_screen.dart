@@ -15,77 +15,89 @@ class ContactDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<ContactController>();
-    final contact = Get.arguments as Contact;
-    final colors = Theme.of(context).colorScheme;
 
-    return Scaffold(
-      body: CustomScrollView(
-        physics: const BouncingScrollPhysics(
-          parent: AlwaysScrollableScrollPhysics(),
-        ),
-        slivers: [
-          SliverAppBar(
-            expandedHeight: 260,
-            pinned: true,
-            stretch: true,
-            leading: IconButton(
-              icon: _AppBarCircle(
-                child: Icon(Icons.arrow_back_rounded,
-                    color: colors.onSurface, size: 22),
-              ),
-              onPressed: controller.goBack,
-            ),
-            actions: [
-              IconButton(
+    // Seed selectedContact from route arguments (only first build).
+    final initial = Get.arguments as Contact;
+    if (controller.selectedContact.value?.id != initial.id) {
+      controller.selectedContact.value = initial;
+    }
+
+    return Obx(() {
+      // Reactively read the contact — updates after edit/save.
+      final contact = controller.selectedContact.value ?? initial;
+      final colors = Theme.of(context).colorScheme;
+
+      return Scaffold(
+        body: CustomScrollView(
+          physics: const BouncingScrollPhysics(
+            parent: AlwaysScrollableScrollPhysics(),
+          ),
+          slivers: [
+            SliverAppBar(
+              expandedHeight: 260,
+              pinned: true,
+              stretch: true,
+              titleSpacing: 20,
+              actionsPadding: EdgeInsetsGeometry.only(right: 10),
+              leading: IconButton(
                 icon: _AppBarCircle(
-                  child: Icon(
-                    contact.isFavorite
-                        ? Icons.star_rounded
-                        : Icons.star_outline_rounded,
-                    color: contact.isFavorite
-                        ? colors.tertiary
-                        : colors.onSurface,
-                    size: 22,
-                  ),
-                ),
-                onPressed: () => controller.onDetailFavoritePressed(contact),
-              ),
-              PopupMenuButton<String>(
-                icon: _AppBarCircle(
-                  child: Icon(Icons.more_vert_rounded,
+                  child: Icon(Icons.arrow_back_rounded,
                       color: colors.onSurface, size: 22),
                 ),
-                onSelected: (value) =>
-                    controller.onDetailMenuAction(value, contact),
-                itemBuilder: (_) => _menuItems,
+                onPressed: controller.goBack,
               ),
-            ],
-            flexibleSpace: FlexibleSpaceBar(
-              background: _HeaderBackground(contact: contact),
+              actions: [
+                IconButton(
+                  icon: _AppBarCircle(
+                    child: Icon(
+                      contact.isFavorite
+                          ? Icons.star_rounded
+                          : Icons.star_outline_rounded,
+                      color: contact.isFavorite
+                          ? colors.tertiary
+                          : colors.onSurface,
+                      size: 22,
+                    ),
+                  ),
+                  onPressed: () => controller.onDetailFavoritePressed(contact),
+                ),
+                PopupMenuButton<String>(
+                  icon: _AppBarCircle(
+                    child: Icon(Icons.more_vert_rounded,
+                        color: colors.onSurface, size: 22),
+                  ),
+                  onSelected: (value) =>
+                      controller.onDetailMenuAction(value, contact),
+                  itemBuilder: (_) => _menuItems,
+                ),
+              ],
+              flexibleSpace: FlexibleSpaceBar(
+                background: _HeaderBackground(contact: contact),
+              ),
             ),
-          ),
-          SliverToBoxAdapter(
-            child: _SlideUpFadeIn(
-              child: Center(
-                child: ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: 600),
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(20, 24, 20, 40),
-                    child: Column(
-                      children: [
-                        _QuickActions(contact: contact),
-                        const SizedBox(height: 28),
-                        _InfoSection(contact: contact),
-                      ],
+            SliverToBoxAdapter(
+              child: _SlideUpFadeIn(
+                child: Center(
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: 600),
+                    child: Padding(
+                      padding: const EdgeInsets.fromLTRB(20, 24, 20, 40),
+                      child: Column(
+                        children: [
+                          _QuickActions(contact: contact),
+                          const SizedBox(height: 28),
+                          _InfoSection(contact: contact),
+                        ],
+                      ),
                     ),
                   ),
                 ),
               ),
             ),
-          ),
-        ],
-      ),
-    );
+          ],
+        ),
+      );
+    });
   }
 }
 

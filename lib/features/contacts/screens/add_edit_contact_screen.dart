@@ -95,6 +95,7 @@ class _AddEditContactScreenState extends State<AddEditContactScreen>
     return Scaffold(
       appBar: AppBar(
         title: Text(_isEditing ? AppStrings.editContact : AppStrings.newContact),
+        actionsPadding: EdgeInsetsGeometry.only(right: 10),
         leading: IconButton(
           icon: const Icon(Icons.close_rounded),
           onPressed: _controller.goBack,
